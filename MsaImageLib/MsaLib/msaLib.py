@@ -14,7 +14,8 @@ import cv2
 from MsaLib.block import Block
 from MsaLib.image import Image
 from MsaLib.point import Point
-
+import json
+import numpy as np
 
 class MsaImage:
     W: int
@@ -62,7 +63,8 @@ class MsaImage:
         block_obj = Block(block, x, y)
         return block_obj
 
-
+    def encode_block(self,index):
+        ...
 
 
     '''計算2影像的ＰＳＮＲ'''
@@ -81,3 +83,5 @@ class MsaImage:
             rmse = 1
         psnr = 20 * math.log10(1 / rmse)
         return psnr
+
+

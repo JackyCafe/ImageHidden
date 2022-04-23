@@ -7,8 +7,12 @@
 # @File : msaLib.py
 # @Software: PyCharm
 '''
+import math
+
 import cv2
+
 from MsaLib.block import Block
+from MsaLib.image import Image
 from MsaLib.point import Point
 
 
@@ -29,6 +33,12 @@ class MsaImage:
         self.cols = x
         self.rows = y
 
+    '''
+    將一張影像依x,y大小分割成小的block,
+    並把位置記錄在p的物件，位置從(0,0),(0,4)...開始
+    存放在locates 的list 
+    '''
+
     def get_block_locate(self) -> list:
         self.locates = []
         for i in range(0, self.W, self.cols):
@@ -37,38 +47,37 @@ class MsaImage:
                 self.locates.append(p)
         return self.locates
 
+    '''丟入第幾個index,會去locates中找出其x,y
+    '''
+
     def get_block(self, index):
         x: int = self.locates[index].x
         y: int = self.locates[index].y
+        # 宣告block 大小
         block = [[0 for x in range(self.cols)] for y in range(self.rows)]
-        for i in range(x, x + 4):
-            for j in range(y, y + 4):
+        for i in range(x, x + self.cols):
+            for j in range(y, y + self.rows):
                 # block = Block(self.image[i][j], i-x, j-y)
                 block[i - x][j - y] = self.image[i][j]
         block_obj = Block(block, x, y)
         return block_obj
 
-    def storage_block(self):
-        self.blocks = []
-        for i,l in enumerate(self.locates):
-            block_obj = self.get_block(i)
-            self.blocks.append(block_obj)
-        return self.blocks
 
 
 
-
-    # def get_block(self, index):
-    #     x: int = self.locates[index].x
-    #     y: int = self.locates[index].y
-    #     block = [[0 for x in range(self.cols)] for y in range(self.rows)]
-    #     for i in range(x, x + 4):
-    #         for j in range(y, y + 4):
-    #             block[i-x][j-y] = self.image[i][j]
-    #     return block
-
-    # def storage_block(self):
-    #     self.locates = self.get_block_locate()
-    #     for i, l in enumerate(self.locates):
-    #         self.blocks.append(self.get_block(i))
-    #     return self.blocks
+    '''計算2影像的ＰＳＮＲ'''
+    def PSNR(self, dest: Image) -> float:
+        sousum: float
+        M: int
+        N: int
+        M = self.image.shape[0]
+        N = self.image.shape[1]
+        sum = 0
+        for i in range(self.image.shape[0]):
+            for j in range(self.image.shape[1]):
+                sum += (self.image[i][j]/255 - dest.image[i][j]/255) ** 2
+        rmse = math.sqrt(sum / (M * N))
+        if rmse < 1.0e-10:
+            rmse = 1
+        psnr = 20 * math.log10(1 / rmse)
+        return psnr

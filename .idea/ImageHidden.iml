@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/../ImageHidden">
-      <sourceFolder url="file://$MODULE_DIR$/../ImageHidden/MsaImageLib" isTestSource="false" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/MsaImageLib" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.10 (ImageHidden)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">
       <list>
-        <option value="$MODULE_DIR$/../ImageHidden/MsaImageLib/MsaLib" />
+        <option value="$MODULE_DIR$/MsaImageLib/MsaLib" />
       </list>
     </option>
   </component>

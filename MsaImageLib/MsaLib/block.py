@@ -7,14 +7,18 @@
 # @File : block.py
 # @Software: PyCharm
 '''
+import math
+import string
+
 import numpy as np
+from numpy import log2
 
 
 class Block:
     x: int
     y: int
     data = {}
-
+    key = "0" # 
     # average: float
 
     # def __init__(self, block: list[list[int]], x: int, y: int) -> None:
@@ -22,6 +26,7 @@ class Block:
         self.block = np.array(block)
         self.x = x
         self.y = y
+
 
     def get_block_info(self) -> tuple:
         self.data['X'] = self.x
@@ -40,20 +45,33 @@ class Block:
 
     # 複製一份區塊
     def clone(self) -> float:
-        return Block(self.block.copy(),self.x,self.y)
+        return Block(self.block.copy(), self.x, self.y)
 
     # block encode
-    def encode(self):
-        print(self.to_np())
-        # for i in range(self[0]):
-        #     for j in range(self[1]):
-        #         print(self[i][j])
+    def encode(self,key:str):
+        st_table = self.st_table()
+        print(st_table)
+
+    def st_table(self):
+        st_table = self.block
+        x = self.to_np()
+        print(self.get_block_info())
+        w = x.shape[0]
+        h = x.shape[1]
+        for i in range(w):
+            for j in range(h):
+                if x[i][j] > math.floor(self.avg()):
+                    x[i][j] = x[i][j] - self.avg()
+                else:
+                    x[i][j] = x[i][j] - self.min()
+                st_table[i][j] = log2(x[i][j])
+        return st_table
 
     def decode(self):
         ...
 
     def to_np(self):
-        return np.array(self)
+        return np.array(self.block)
 
     def __str__(self):
         return f"x:{self.x}, y:{self.y}, block:{self.block} "

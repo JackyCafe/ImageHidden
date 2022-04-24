@@ -51,7 +51,7 @@ class MsaImage:
     '''丟入第幾個index,會去locates中找出其x,y
     '''
 
-    def get_block(self, index):
+    def get_block(self, index) -> Block:
         x: int = self.locates[index].x
         y: int = self.locates[index].y
         # 宣告block 大小

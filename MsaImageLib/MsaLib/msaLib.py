@@ -17,6 +17,7 @@ from MsaLib.point import Point
 import json
 import numpy as np
 
+
 class MsaImage:
     W: int
     H: int

@@ -10,6 +10,7 @@
 import sys
 
 from MsaLib import Block
+from MsaLib.image import Image
 from MsaLib.msaLib import MsaImage
 import logging
 import json
@@ -26,22 +27,29 @@ logging.basicConfig(
 )
 
 
+def generate_key(img: MsaImage, key: str) -> str:
+    cols = img.W
+    keys = []
+    repeat_time = (int)(cols / img.cols)
+    keys.append(key)
+    return keys*repeat_time*repeat_time
+
+
 if __name__ == '__main__':
-    image = MsaImage("../images/didh_ambtc_s1_Baboon512.raw.bmp", 4, 4)
-
+    block_size = 4
+    image = MsaImage("../images/didh_ambtc_s1_Baboon512.raw.bmp", block_size, block_size)
     locates = image.get_block_locate()
-
+    key = "01011010"
     # block = image.get_block(1)
     # s1 = block.get_block_info()
     # s2 = block.get_block_info()
     s1: Block
     s2: Block
+
     s1 = image.get_block(8)
     s2 = s1.clone()
-    s1.encode()
-
-
-
+    keys = generate_key(image, key)
+    s1.encode(key)
 
     '''get one block by index
     for i, l in enumerate(locates):
@@ -52,5 +60,3 @@ if __name__ == '__main__':
     '''get all block information'''
     # for block in image.storage_block():
     #     print(block.get_block_info(),block.avg())
-
-

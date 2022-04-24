@@ -10,6 +10,7 @@
 import sys
 
 from MsaLib import Block
+from MsaLib.embedded import Embedded
 from MsaLib.image import Image
 from MsaLib.msaLib import MsaImage
 import logging
@@ -26,13 +27,17 @@ logging.basicConfig(
     ]
 )
 
+'''一張512*512 的影像 如果被切成4*4 的block 的話，會有128*128 個block
+    每個block 塞一個key值，如果是key 值為0 的話，該block s1 需與s2 交換
+'''
 
-def generate_key(img: MsaImage, key: str) -> str:
+
+def generate_key(img: MsaImage, base_key: str) -> str:
     cols = img.W
-    keys = []
-    repeat_time = (int)(cols / img.cols)
-    keys.append(key)
-    return keys*repeat_time*repeat_time
+    base_keys = []
+    repeat_time = int(cols / img.cols)
+    base_keys.append(base_key)
+    return base_keys*repeat_time*repeat_time
 
 
 if __name__ == '__main__':
@@ -40,16 +45,15 @@ if __name__ == '__main__':
     image = MsaImage("../images/didh_ambtc_s1_Baboon512.raw.bmp", block_size, block_size)
     locates = image.get_block_locate()
     key = "01011010"
-    # block = image.get_block(1)
-    # s1 = block.get_block_info()
-    # s2 = block.get_block_info()
+    embedded_data = "11000111001110110"
     s1: Block
     s2: Block
 
     s1 = image.get_block(8)
     s2 = s1.clone()
     keys = generate_key(image, key)
-    s1.encode(key)
+    e1 = Embedded(s1,key)
+    e1.encode()
 
     '''get one block by index
     for i, l in enumerate(locates):

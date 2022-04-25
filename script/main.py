@@ -37,7 +37,7 @@ def generate_key(img: MsaImage, base_key: str) -> str:
     base_keys = []
     repeat_time = int(cols / img.cols)
     base_keys.append(base_key)
-    return base_keys*repeat_time*repeat_time
+    return base_keys * repeat_time * repeat_time
 
 
 if __name__ == '__main__':
@@ -45,15 +45,20 @@ if __name__ == '__main__':
     image = MsaImage("../images/didh_ambtc_s1_Baboon512.raw.bmp", block_size, block_size)
     locates = image.get_block_locate()
     key = "01011010"
-    embedded_data = "11000111001110110"
+    embedded_data = ""
     s1: Block
     s2: Block
+    #embedded_data ，要隱藏的資料
 
-    s1 = image.get_block(8)
-    s2 = s1.clone()
+    with open("embedded.csv", "r") as f:
+        embedded_data = f.readlines()
+    b1 = image.get_block(8)
+    s2 = b1.clone()
     keys = generate_key(image, key)
-    e1 = Embedded(s1,key)
-    e1.encode()
+    e1 = Embedded(b1, key)
+    len = e1.st_table().sum() #要丟入的
+    pos = e1.encode()
+    print(pos)
 
     '''get one block by index
     for i, l in enumerate(locates):

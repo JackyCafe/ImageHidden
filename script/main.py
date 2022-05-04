@@ -8,6 +8,8 @@
 # @Software: PyCharm
 '''
 import sys
+from os import listdir
+from os.path import join
 
 import cv2
 
@@ -19,21 +21,20 @@ import logging
 import json
 
 from MsaLib.numpy_encoder import NumpyEncoder
+from pathlib import Path
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("lena5.log"),
+        logging.FileHandler("result.log"),
         logging.StreamHandler(sys.stdout)
     ]
 )
 
 '''一張512*512 的影像 如果被切成4*4 的block 的話，會有128*128 個block
-    每個block 塞一個key值，如果是key 值為0 的話，該block s1 需與s2 交換
+    每個block 塞一個key值，如果是key 值為1 的話，該block s1 需與s2 交換
 '''
-
-
 def generate_key(img: MsaImage, base_key: str) -> str:
     cols = img.W
     base_keys = []
@@ -43,56 +44,74 @@ def generate_key(img: MsaImage, base_key: str) -> str:
     return base_keys * repeat_time * repeat_time
 
 
-if __name__ == '__main__':
+'''資料隱藏
+'''
+def data_hidden(file: str):
     block_size = 4
-    # image = MsaImage("../images/didh_ambtc_s1_Baboon512.raw.bmp", block_size, block_size)
-    image = MsaImage("../images/didh_ambtc_s1_Alan512.raw.bmp", block_size, block_size)
+    file_name = Path(file).stem
+    image = MsaImage(file, block_size, block_size)
     locates = image.get_block_locate()
-    key = "0101101011000011"
+    key = "1001011010100101"
     embedded_data = ""
     s1: Block
     s2: Block
     # embedded_data ，要隱藏的資料
     with open("embedded.csv", "r") as f:
         embedded_data = f.read()
-    b1 = image.get_block(0)
-    s2 = b1.clone()
     keys = generate_key(image, key)
+    '''建立一個blocks 來依序存放所有的block 
+    '''
+    b1_blocks = []
     s1_blocks = []
     s2_blocks = []
 
-    '''get one block by index'''
+    ''' '''
     for i, l in enumerate(locates):
         b1 = image.get_block(i)
         b2 = b1.clone()
-        e1 = Embedded(b1, key)
-        len = int(e1.st_table().sum())  # 要丟入的資料長度
+        e1 = Embedded(b1) # 建立一個Embedded 物件，
+        len = int(e1.st_table().sum())  # 讀取e1的stable來計算要丟入的資料長度
         data = embedded_data[0:len]  # 要嵌入的資料量
         e1.set_hidden_data(data)
         source = e1.encode()  # 將e1嵌入b1
-        b1 = Block(source, b1.x, b1.y) #嵌入資料
+        b1 = Block(source, b1.x, b1.y)  # 嵌入資料
         s1 = b1.clone()
         s2 = b2.clone()
         '''如果key為1時將資料交換'''
-        for k in keys[i]:
-            for x in range(4):
-                for y in range(4):
-                    if int(k) == 1:
-                        s1.block[x][y] = b2.block[x][y]
-                        s2.block[x][y] = b1.block[x][y]
+        for x in range(0,4):
+            for y in range(0,4):
+                if keys[i][x*4+y]=="1":
+                    s1.block[x][y] = b2.block[x][y]
+                    s2.block[x][y] = source[x][y]
+                elif keys[i][x*4+y]=="0":
+                    s1.block[x][y] = source[x][y]
+                    s2.block[x][y] = b2.block[x][y]
+        b1_blocks.append(b1)
         s1_blocks.append(s1)
         s2_blocks.append(s2)
 
     '''重建測試'''
-
+    b1_img = MsaImage.reconstruct_image(b1_blocks)
     s1_img = MsaImage.reconstruct_image(s1_blocks)
     s2_img = MsaImage.reconstruct_image(s2_blocks)
+    psnr_b1 = image.PSNR(b1_img)
     psnr_s1 = image.PSNR(s1_img)
     psnr_s2 = image.PSNR(s2_img)
-    logging.info("psnr:" + str(psnr_s1))
-    logging.info("psnr:" + str(psnr_s2))
+    print(file_name + "s1 psnr:" + str(psnr_s1))
+    print(file_name + "s2 psnr:" + str(psnr_s2))
+    logging.info(file_name + "b1 psnr:" + str(psnr_b1))
+    logging.info(file_name + "s1 psnr:" + str(psnr_s1))
+    logging.info(file_name + "s2 psnr:" + str(psnr_s2))
 
-    cv2.imwrite("s1.png", s1_img)
-    cv2.imwrite("s2.png", s1_img)
+    cv2.imwrite('../process_images/' + file_name + "_b1.png", b1_img)
+    cv2.imwrite('../process_images/' + file_name + "_s1.png", s1_img)
+    cv2.imwrite('../process_images/' + file_name + "_s2.png", s1_img)
 
-    cv2.waitKey(0)
+
+if __name__ == '__main__':
+    path = listdir('../images/')
+    for f in path:
+        file = join('../images/', f)
+        data_hidden(file=file)
+
+    print("done")

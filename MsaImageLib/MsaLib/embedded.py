@@ -11,9 +11,9 @@ class Embedded:
     key: str
     embedded_data: str
 
-    def __init__(self, block: Block, key: str, data: str = " "):
+    def __init__(self, block: Block, data: str = " "):
         self.block = block
-        self.key = key
+        # self.key = key
         self.embedded_data = data
 
     def set_hidden_data(self, data):

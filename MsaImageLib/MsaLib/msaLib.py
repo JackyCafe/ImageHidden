@@ -98,7 +98,7 @@ class MsaImage:
             for j in range(self.image.shape[1]):
                 sum += (self.image[i][j] / 255 - dest[i][j] / 255) ** 2
         rmse = math.sqrt(sum / (M * N))
-        if rmse < 1.0e-10:
+        if rmse < 1.0e-20:
             rmse = 1
         psnr = 20 * math.log10(1 / rmse)
         return psnr

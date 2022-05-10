@@ -25,7 +25,8 @@ from pathlib import Path
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
+    # format="%(asctime)s [%(levelname)s] %(message)s",
+    format="",
     handlers=[
         logging.FileHandler("result.log"),
         logging.StreamHandler(sys.stdout)
@@ -99,9 +100,9 @@ def data_hidden(file: str):
     psnr_s2 = image.PSNR(s2_img)
     print(file_name + "s1 psnr:" + str(psnr_s1))
     print(file_name + "s2 psnr:" + str(psnr_s2))
-    logging.info(file_name + "b1 psnr:" + str(psnr_b1))
-    logging.info(file_name + "s1 psnr:" + str(psnr_s1))
-    logging.info(file_name + "s2 psnr:" + str(psnr_s2))
+    # logging.info(file_name + "b1 psnr:" + str(psnr_b1))
+    logging.info(str(psnr_s1))
+    # logging.info(file_name + "s2 psnr:" + str(psnr_s2))
 
     cv2.imwrite('../process_images/' + file_name + "_b1.png", b1_img)
     cv2.imwrite('../process_images/' + file_name + "_s1.png", s1_img)

@@ -23,7 +23,7 @@ import random
 
 def generate_data():
     binary_strings =[]
-    for j in range(128):
+    for j in range(1):
         str = ''
         for i in range(4096):
             if random.randint(0, 100) % 2 == 0:

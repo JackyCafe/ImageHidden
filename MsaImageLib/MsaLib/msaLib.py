@@ -51,7 +51,6 @@ class MsaImage:
 
     '''丟入第幾個index,會去locates中找出其x,y
     '''
-
     def get_block(self, index) -> Block:
         x: int = self.locates[index].x
         y: int = self.locates[index].y
@@ -64,8 +63,9 @@ class MsaImage:
         block_obj = Block(block, x, y)
         return block_obj
 
-    '''重建影像'''
 
+
+    '''重建影像'''
     @classmethod
     def reconstruct_image(cls, blocks, cols=512, rows=512, w=4, h=4) -> Image:
         dst: Image
@@ -77,16 +77,9 @@ class MsaImage:
                 for j in range(h):
                     dst[x+i][y+j] =block.block[i][j]
         return dst
-         # for x in cols:
-        #     for y in rows :
-        #         dst[x][y] = blocks
 
-        #
-        # for i,l in enumerate(blocks):
-        #     print(i)
 
     '''計算2影像的ＰＳＮＲ'''
-
     def PSNR(self, dest: Image) -> float:
         sousum: float
         M: int

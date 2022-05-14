@@ -47,29 +47,22 @@ class Block:
     def clone(self) -> float:
         return Block(self.block.copy(), self.x, self.y)
 
-    # block encode
-    # def encode(self, key: str = " "):
-    #     st_table = self.st_table()
+    ''' 判斷區塊內的像素值是否都一樣'''
 
-    # def st_table(self):
-    #     st_table = self.block
-    #     x = self.to_np()
-    #     w = x.shape[0]
-    #     h = x.shape[1]
-    #     for i in range(w):
-    #         for j in range(h):
-    #             if x[i][j] > math.floor(self.avg()):
-    #                 x[i][j] = x[i][j] - self.avg()
-    #             else:
-    #                 x[i][j] = x[i][j] - self.min()
-    #             if x[i][j] == 0:
-    #                 st_table[i][j] = 0
-    #             else:
-    #                 st_table[i][j] = log2(x[i][j])
-    #     return st_table
+    def is_the_same_pixel(self):
+        avg = self.avg()
+        x = self.to_np()
+        is_equal = False
+        mask = (x == avg)
+        if mask.all() == True:
+            return True
+        else:
+            return False
 
-    def decode(self):
-        ...
+        # if (mask= (x == avg)):
+        #     return True
+        # else:
+        #     return False
 
     def to_np(self):
         return np.array(self.block)

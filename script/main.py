@@ -39,6 +39,7 @@ logging.basicConfig(
 def generate_key(img: MsaImage, base_key: str) -> str:
     cols = img.W
     base_keys = []
+    embedded_datas = ""
     repeat_time = int(cols / img.cols)
     base_keys = base_keys * repeat_time * repeat_time
     base_keys.append(base_key)
@@ -53,7 +54,7 @@ def data_hidden(file: str):
     image = MsaImage(file, block_size, block_size)
     locates = image.get_block_locate()
     key = "1001011010100101"
-    embedded_data = ""
+    embedded_datas = ""
     s1: Block
     s2: Block
     # embedded_data ，要隱藏的資料
@@ -73,6 +74,7 @@ def data_hidden(file: str):
         e1 = Embedded(b1) # 建立一個Embedded 物件，
         len = int(e1.st_table().sum())  # 讀取e1的stable來計算要丟入的資料長度
         data = embedded_data[0:len]  # 要嵌入的資料量
+        embedded_datas+=data
         e1.set_hidden_data(data)
         source = e1.encode()  # 將e1嵌入b1
         b1 = Block(source, b1.x, b1.y)  # 嵌入資料
@@ -91,18 +93,24 @@ def data_hidden(file: str):
         s1_blocks.append(s1)
         s2_blocks.append(s2)
 
+    with open('../embedded_data/' + file_name + ".csv", 'w') as f:
+        f.write(embedded_datas)
+    size = Path('../embedded_data/' + file_name + ".csv").stat().st_size
+    size = int(size/1024)
     '''重建測試'''
     b1_img = MsaImage.reconstruct_image(b1_blocks)
     s1_img = MsaImage.reconstruct_image(s1_blocks)
     s2_img = MsaImage.reconstruct_image(s2_blocks)
     psnr_b1 = image.PSNR(b1_img)
-    psnr_s1 = image.PSNR(s1_img)
+    psnr_s1 = int(image.PSNR(s1_img))
     psnr_s2 = image.PSNR(s2_img)
     print(file_name + "s1 psnr:" + str(psnr_s1))
     print(file_name + "s2 psnr:" + str(psnr_s2))
     # logging.info(file_name + "b1 psnr:" + str(psnr_b1))
-    logging.info(str(psnr_s1))
+    logging.info(file_name +",psnr"+str(psnr_s1)+", size:"+str(size)+"kb" )
     # logging.info(file_name + "s2 psnr:" + str(psnr_s2))
+
+
 
     cv2.imwrite('../process_images/' + file_name + "_b1.png", b1_img)
     cv2.imwrite('../process_images/' + file_name + "_s1.png", s1_img)

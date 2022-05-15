@@ -1,0 +1,64 @@
+2022-05-14 10:09:57,198 [INFO] didh_ambtc_s1_Alan512.rawb1 psnr:17.368288343906976
+2022-05-14 10:09:57,198 [INFO] didh_ambtc_s1_Alan512.raws1 psnr:20.491297096767774
+2022-05-14 10:09:57,198 [INFO] didh_ambtc_s1_Alan512.raws2 psnr:20.268730702200465
+2022-05-14 10:10:03,329 [INFO] didh_ambtc_s1_Baboon512.rawb1 psnr:18.503619970277995
+2022-05-14 10:10:03,329 [INFO] didh_ambtc_s1_Baboon512.raws1 psnr:21.474443157302655
+2022-05-14 10:10:03,329 [INFO] didh_ambtc_s1_Baboon512.raws2 psnr:21.55375882918248
+2022-05-14 10:10:07,508 [INFO] didh_ambtc_s1_Barbara512.rawb1 psnr:17.706159577996253
+2022-05-14 10:10:07,508 [INFO] didh_ambtc_s1_Barbara512.raws1 psnr:20.645630826814923
+2022-05-14 10:10:07,508 [INFO] didh_ambtc_s1_Barbara512.raws2 psnr:20.788462559970213
+2022-05-14 10:10:11,579 [INFO] didh_ambtc_s1_Boat512.rawb1 psnr:21.708080454852666
+2022-05-14 10:10:11,579 [INFO] didh_ambtc_s1_Boat512.raws1 psnr:24.682818230510737
+2022-05-14 10:10:11,579 [INFO] didh_ambtc_s1_Boat512.raws2 psnr:24.754236199051803
+didh_ambtc_s1_Alan512.raw,psnr20, size:652kb
+didh_ambtc_s1_Baboon512.raw,psnr21, size:981kb
+didh_ambtc_s1_Barbara512.raw,psnr20, size:838kb
+didh_ambtc_s1_Boat512.raw,psnr24, size:660kb
+didh_ambtc_s1_body512_2.raw,psnr14, size:526kb
+didh_ambtc_s1_F16_512.raw,psnr24, size:591kb
+didh_ambtc_s1_flower512.raw,psnr27, size:619kb
+didh_ambtc_s1_fruits512.raw,psnr25, size:477kb
+didh_ambtc_s1_GoldHill512.raw,psnr26, size:766kb
+didh_ambtc_s1_head512.raw,psnr19, size:523kb
+didh_ambtc_s1_ImageBook512.raw,psnr26, size:497kb
+didh_ambtc_s1_ImgBook512.raw,psnr26, size:571kb
+didh_ambtc_s1_Jet(F14)512.raw,psnr23, size:667kb
+didh_ambtc_s1_Lena512.raw,psnr27, size:618kb
+didh_ambtc_s1_Magazine512.raw,psnr29, size:571kb
+didh_ambtc_s1_palyBoat512.raw,psnr24, size:722kb
+didh_ambtc_s1_pens512.raw,psnr24, size:766kb
+didh_ambtc_s1_Pepper512.raw,psnr27, size:616kb
+didh_ambtc_s1_playboat512.raw,psnr24, size:722kb
+didh_ambtc_s1_Sailboat512.raw,psnr22, size:812kb
+didh_ambtc_s1_splash512.raw,psnr25, size:537kb
+didh_ambtc_s1_Tiffany512.raw,psnr24, size:581kb
+didh_ambtc_s1_Toys512.raw,psnr24, size:602kb
+didh_ambtc_s1_watch512.raw,psnr27, size:509kb
+didh_ambtc_s1_Zelda512.raw,psnr34, size:457kb
+didh_ambtc_s2_Alan512.raw,psnr20, size:662kb
+didh_ambtc_s2_Baboon512.raw,psnr21, size:988kb
+didh_ambtc_s2_Barbara512.raw,psnr20, size:847kb
+didh_ambtc_s2_Boat512.raw,psnr24, size:668kb
+didh_ambtc_s2_body512_2.raw,psnr14, size:528kb
+didh_ambtc_s2_F16_512.raw,psnr24, size:598kb
+didh_ambtc_s2_flower512.raw,psnr27, size:626kb
+didh_ambtc_s2_fruits512.raw,psnr25, size:479kb
+didh_ambtc_s2_GoldHill512.raw,psnr26, size:775kb
+didh_ambtc_s2_head512.raw,psnr19, size:526kb
+didh_ambtc_s2_ImageBook512.raw,psnr26, size:504kb
+didh_ambtc_s2_ImgBook512.raw,psnr26, size:577kb
+didh_ambtc_s2_Jet(F14)512.raw,psnr23, size:675kb
+didh_ambtc_s2_Lena512.raw,psnr27, size:627kb
+didh_ambtc_s2_Magazine512.raw,psnr29, size:581kb
+didh_ambtc_s2_palyBoat512.raw,psnr24, size:727kb
+didh_ambtc_s2_pens512.raw,psnr24, size:773kb
+didh_ambtc_s2_Pepper512.raw,psnr27, size:625kb
+didh_ambtc_s2_playboat512.raw,psnr24, size:727kb
+didh_ambtc_s2_Sailboat512.raw,psnr22, size:819kb
+didh_ambtc_s2_splash512.raw,psnr24, size:542kb
+didh_ambtc_s2_Tiffany512.raw,psnr24, size:589kb
+didh_ambtc_s2_Toys512.raw,psnr24, size:611kb
+didh_ambtc_s2_watch512.raw,psnr27, size:512kb
+didh_ambtc_s2_Zelda512.raw,psnr34, size:460kb
+lena,psnr26, size:643kb
+lena5,psnr29, size:473kb

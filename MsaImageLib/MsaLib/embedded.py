@@ -41,6 +41,7 @@ class Embedded:
 
     def uniform_encode(self):
         d_st_table = [[0, 1, 2, 0], [3, 0, 4, 2], [5, 6, 7, 4], [0, 5, 6, 7]]
+        # d_st_table =[[0,1],[1,0]]
         self.block.block = self.block.block + d_st_table
 
         return self.block.block

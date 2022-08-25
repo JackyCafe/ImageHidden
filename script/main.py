@@ -28,7 +28,7 @@ logging.basicConfig(
     # format="%(asctime)s [%(levelname)s] %(message)s",
     format="",
     handlers=[
-        logging.FileHandler("orginal.log"),
+        logging.FileHandler("../result/orginal_4.log"),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -48,13 +48,14 @@ def generate_key(img: MsaImage, base_key: str) -> str:
     return base_keys * repeat_time * repeat_time
 
 
-'''資料隱藏
+'''資料隱藏主要程式
 '''
 
 
-def data_hidden(file: str):
-    block_size = 4
+def data_hidden(file: str, block_size=4):
+    block_size = block_size
     file_name = Path(file).stem
+    #將image 依block 拆成block X block
     image = MsaImage(file, block_size, block_size)
     locates = image.get_block_locate()
     key = "1001011010100101"
@@ -82,7 +83,7 @@ def data_hidden(file: str):
 
         if not b1.is_the_same_pixel():
             data = embedded_data[0:len]  # 要嵌入的資料量
-            c1 +=1
+            c1 += 1
         else:
             data = e1.uniform_encode_data()
             c2 += 1
@@ -97,35 +98,36 @@ def data_hidden(file: str):
         s1 = b1.clone()
         s2 = b2.clone()
         # 如果key為1時將資料交換
-        for x in range(0, 4):
-            for y in range(0, 4):
-                if keys[i][x * 4 + y] == "1":
+        for x in range(0, block_size):
+            for y in range(0, block_size):
+                if keys[i][x * block_size + y] == "1":
                     s1.block[x][y] = b2.block[x][y]
                     s2.block[x][y] = source[x][y]
-                elif keys[i][x * 4 + y] == "0":
+                elif keys[i][x * block_size + y] == "0":
                     s1.block[x][y] = source[x][y]
                     s2.block[x][y] = b2.block[x][y]
         b1_blocks.append(b1)
         s1_blocks.append(s1)
         s2_blocks.append(s2)
 
-    print(c1)
-    print(c2)
+    print(f"block 中 pixel 畫素不同 {c1}")
+    print(f"block 中 pixel 畫素相同 {c2}")
     with open('../embedded_data/' + file_name + ".csv", 'w') as f:
         f.write(embedded_datas)
     size = Path('../embedded_data/' + file_name + ".csv").stat().st_size
-    size = int(size)*8
+    size = int(size) * 8
     # 重建測試
-    b1_img = MsaImage.reconstruct_image(b1_blocks)
-    s1_img = MsaImage.reconstruct_image(s1_blocks)
-    s2_img = MsaImage.reconstruct_image(s2_blocks)
+    b1_img = MsaImage.reconstruct_image(b1_blocks, w=block_size, h=block_size)
+    s1_img = MsaImage.reconstruct_image(s1_blocks, w=block_size, h=block_size)
+    s2_img = MsaImage.reconstruct_image(s2_blocks, w=block_size, h=block_size)
     psnr_b1 = image.PSNR(b1_img)
     psnr_s1 = int(image.PSNR(s1_img))
     psnr_s2 = image.PSNR(s2_img)
     print(file_name + "s1 psnr:" + str(psnr_s1))
     print(file_name + "s2 psnr:" + str(psnr_s2))
     # logging.info(file_name + "b1 psnr:" + str(psnr_b1))
-    logging.info(file_name + ",s1_psnr: " + str(psnr_s1)+ ",s2_psnr: " + str(psnr_s2) + ", size:" + str(size) + " bits")
+    logging.info(
+        file_name + "," + str(psnr_s1) + "," + str(psnr_s2) + "," + str(size))
     # logging.info(file_name + "s2 psnr:" + str(psnr_s2))
 
     cv2.imwrite('../process_images/' + file_name + "_b1.png", b1_img)
@@ -137,12 +139,14 @@ if __name__ == '__main__':
     is_test = False
 
     if is_test:
-        file = '../orginal/lena5.jpg'
-        data_hidden(file)
+        file = '../orginal/lena.bmp'
+        data_hidden(file, block_size=2)
     else:
         path = listdir('../orginal/')
+        logging.info(
+            "file_name, psnr_s1,psnr_s2,embedded size(bits)")
         for f in path:
             file = join('../orginal/', f)
-            data_hidden(file=file)
+            data_hidden(file=file,block_size=4)
 
     print("done")

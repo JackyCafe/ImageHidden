@@ -28,13 +28,13 @@ class Block:
         self.x = x
         self.y = y
 
+    '''block 的資訊'''
     def get_block_info(self) -> tuple:
         self.data['X'] = self.x
         self.data['Y'] = self.y
         self.data['data'] = self.block
         self.data['block_avg'] = self.block.mean()
         self.data['block_min'] = self.block.min()
-
         return self.data
 
     def avg(self) -> float:
@@ -43,27 +43,21 @@ class Block:
     def min(self) -> float:
         return self.block.min()
 
-    # 複製一份區塊
+    ''' 複製一份區塊 '''
     def clone(self) -> float:
         return Block(self.block.copy(), self.x, self.y)
 
     ''' 判斷區塊內的像素值是否都一樣'''
-
     def is_the_same_pixel(self):
         avg = self.avg()
         x = self.to_np()
-        is_equal = False
         mask = (x == avg)
         if mask.all() == True:
             return True
         else:
             return False
 
-        # if (mask= (x == avg)):
-        #     return True
-        # else:
-        #     return False
-
+    ''' 轉成np array'''
     def to_np(self):
         return np.array(self.block)
 

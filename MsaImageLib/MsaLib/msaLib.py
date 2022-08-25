@@ -36,11 +36,10 @@ class MsaImage:
         self.rows = y
 
     '''
-    將一張影像依x,y大小分割成小的block,
-    並把位置記錄在p的物件，位置從(0,0),(0,4)...開始
+    將一張影像依 NXN 大小分割成小的block,
+    並把位置記錄在p的物件，位置從(0,0),(0,N),(0,2N)...開始
     存放在locates 的list 
     '''
-
     def get_block_locate(self) -> list:
         self.locates = []
         for i in range(0, self.W, self.cols):
@@ -49,7 +48,7 @@ class MsaImage:
                 self.locates.append(p)
         return self.locates
 
-    '''丟入第幾個index,會去locates中找出其x,y
+    ''' 丟入第幾個index,會去locates中找出其x,y
     '''
     def get_block(self, index) -> Block:
         x: int = self.locates[index].x
